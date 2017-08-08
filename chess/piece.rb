@@ -1,4 +1,5 @@
 require 'singleton'
+require_relative 'movement'
 
 class Piece
 
@@ -35,7 +36,6 @@ class NullPiece < Piece
 end
 
 class Bishop < Piece
-
   include SlidingPiece
 
   def to_s
@@ -78,16 +78,28 @@ end
 
 class Knight < Piece
 
+  include SteppingPiece
+
   def to_s
     @color == :white ? "\u2658" : "\u265E"
+  end
+
+  def steps
+    [2, -2].product([1, -1]) + [1, -1].product([2, -2])
   end
 
 end
 
 class King < Piece
 
+  include SteppingPiece
+
   def to_s
     @color == :white ? "\u2654" : "\u265A"
+  end
+
+  def steps
+    [-1, 0, 1].product([-1, 0, 1]) - [[0, 0]]
   end
 
 end
@@ -100,54 +112,4 @@ class Pawn < Piece
 
   def moves; end
 
-end
-
-module SlidingPiece
-
-  def moves
-    moves = []
-    case move_dirs
-    when :diagonal
-      moves += diagonals
-    when :horiz_vert
-      moves += row + col
-    when :both
-      moves += diagonals + row + col
-    end
-    remove_invalid_moves(moves.uniq)
-  end
-
-  def diagonals
-    diagonals = []
-    8.times do |i|
-      diagonals << [@position[0] + i, @position[1] + i]
-      diagonals << [@position[0] + i, @position[1] - i]
-      diagonals << [@position[0] - i, @position[1] + i]
-      diagonals << [@position[0] - i, @position[1] - i]
-    end
-    diagonals
-  end
-
-  def row
-    row = []
-    8.times { |i| row << [@position[0], i] }
-    row
-  end
-
-  def col
-    col = []
-    8.times { |i| col << [i, @position[1]] }
-    col
-  end
-
-  def remove_invalid_moves(moves_arr)
-    moves_arr.select do |pos|
-      pos.all? { |el| (0..7).cover?(el) } &&
-      @board[pos].color != self.color
-    end
-  end
-
-end
-
-module SteppingPiece
 end
