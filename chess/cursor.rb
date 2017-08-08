@@ -1,3 +1,4 @@
+require 'byebug'
 require "io/console"
 
 KEYMAP = {
@@ -76,17 +77,21 @@ class Cursor
   end
 
   def handle_key(key)
-    input = KEYMAP[key]
-    case input
+    case key
     when :return || :space
       @cursor_pos
     when :left || :right || :up || :down
-      update_pos(MOVES[input])
+      update_pos(MOVES[key])
     when :ctrl_c
       Process.exit(0)
     end
   end
 
   def update_pos(diff)
+    if (0..7).cover?(@cursor_pos[0] + diff[0]) &&
+       (0..7).cover?(@cursor_pos[1] + diff[1])
+      @cursor_pos[0] += diff[0]
+      @cursor_pos[1] += diff[1]
+    end
   end
 end
