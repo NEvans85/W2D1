@@ -16,7 +16,7 @@ class Display
       print '|'
       row.each_with_index do |piece, cidx|
         if @cursor.cursor_pos == [ridx, cidx]
-          print piece.to_s.colorize(:color => :white, :background => :red)
+          print piece.to_s.colorize(:background => :red)
         else
           print piece.to_s
         end
