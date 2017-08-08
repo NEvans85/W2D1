@@ -1,17 +1,21 @@
 require_relative 'piece'
 
 class Board
- attr_reader :grid
+  attr_reader :grid
   def initialize
     @grid = Array.new(8) { Array.new(8) { NullPiece.new } }
-
+    populate_board
   end
 
   def move_piece(start_pos, end_pos)
-    raise NoPieceException if self[start_pos].is_a?(NullPiece)
+    raise NoMoveException if self[start_pos].is_a?(NullPiece)
     raise NoMoveException unless self[end_pos].is_a?(NullPiece)
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.new
+  end
+
+  def populate_board
+    [0, 1, 6, 7].each { |r_idx| @grid[r_idx].map! { Piece.new } }
   end
 
   def []=(pos, piece)

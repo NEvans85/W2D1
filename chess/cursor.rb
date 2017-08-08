@@ -78,20 +78,29 @@ class Cursor
 
   def handle_key(key)
     case key
-    when :return || :space
+    when :return
       @cursor_pos
-    when :left || :right || :up || :down
+    when :space
+      @cursor_pos
+    when :left
       update_pos(MOVES[key])
+      nil
+    when :right
+      update_pos(MOVES[key])
+      nil
+    when :up
+      update_pos(MOVES[key])
+      nil
+    when :down
+      update_pos(MOVES[key])
+      nil
     when :ctrl_c
       Process.exit(0)
     end
   end
 
   def update_pos(diff)
-    if (0..7).cover?(@cursor_pos[0] + diff[0]) &&
-       (0..7).cover?(@cursor_pos[1] + diff[1])
-      @cursor_pos[0] += diff[0]
-      @cursor_pos[1] += diff[1]
-    end
+    new_pos = [@cursor_pos[0] + diff[0], @cursor_pos[1] + diff[1]]
+    @cursor_pos = new_pos unless new_pos.any? { |el| [-1, 8].include?(el) }
   end
 end

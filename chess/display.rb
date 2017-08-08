@@ -13,21 +13,26 @@ class Display
   def render
     @board.grid.each_with_index do |row, ridx|
       row.each_with_index do |piece, cidx|
-        if @cursor.cursor_pos == [ridx,cidx]
-          print piece.to_s.colorize(:background=> :red)
+        print '|'
+        if @cursor.cursor_pos == [ridx, cidx]
+          print piece.to_s.colorize(:background => :red)
         else
           print piece.to_s
-      end
+        end
+        print'|'
       end
       print "\n"
     end
+    nil
   end
 
   def select_position
-    while true
+    selection = nil
+    while selection.nil?
       render
-      @cursor.get_input
-      # debugger
+      selection = @cursor.get_input
+      system 'clear'
     end
+    selection
   end
 end
