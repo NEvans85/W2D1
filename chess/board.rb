@@ -9,7 +9,7 @@ class Board
 
   def move_piece(start_pos, end_pos)
     raise NoMoveException if self[start_pos].is_a?(NullPiece)
-    raise NoMoveException unless self[end_pos].is_a?(NullPiece)
+    raise NoMoveException unless self[start_pos].valid_move?
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.new
   end

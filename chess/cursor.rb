@@ -82,16 +82,7 @@ class Cursor
       @cursor_pos
     when :space
       @cursor_pos
-    when :left
-      update_pos(MOVES[key])
-      nil
-    when :right
-      update_pos(MOVES[key])
-      nil
-    when :up
-      update_pos(MOVES[key])
-      nil
-    when :down
+    when :left, :right, :up, :down
       update_pos(MOVES[key])
       nil
     when :ctrl_c

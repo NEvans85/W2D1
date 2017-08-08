@@ -11,11 +11,12 @@ class Display
   end
 
   def render
+    system 'clear'
     @board.grid.each_with_index do |row, ridx|
+      print '|'
       row.each_with_index do |piece, cidx|
-        print '|'
         if @cursor.cursor_pos == [ridx, cidx]
-          print piece.to_s.colorize(:background => :red)
+          print piece.to_s.colorize(:color => :white, :background => :red)
         else
           print piece.to_s
         end
@@ -31,7 +32,6 @@ class Display
     while selection.nil?
       render
       selection = @cursor.get_input
-      system 'clear'
     end
     selection
   end
