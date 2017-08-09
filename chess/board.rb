@@ -35,15 +35,22 @@ class Board
   end
 
   def find_king(color)
-    @grid.each_with_index do |row, idx|
-      row.each_with_index do |piece, idx|
-        
+    @grid.each_with_index do |row, r_idx|
+      row.each_with_index do |piece, c_idx|
+        return [r_idx, c_idx] if piece.is_a?(King) && piece.color == color
       end
     end
+    raise "where'd the king go?"
   end
 
   def valid_moves(color)
-
+    all_moves = []
+    @grid.each do |row|
+      row.each do |piece|
+        all_moves += piece.moves if piece.color == color
+      end
+    end
+    all_moves.uniq
   end
 
   def []=(pos, piece)
