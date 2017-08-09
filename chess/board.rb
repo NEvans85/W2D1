@@ -4,7 +4,7 @@ class Board
   attr_reader :grid
   def initialize
     @grid = Array.new(8) { Array.new(8) { NullPiece.instance } }
-    populate_std_board
+    standard_setup
   end
 
   def move_piece(start_pos, end_pos)
@@ -15,7 +15,7 @@ class Board
     self.position = end_pos
   end
 
-  def populate_std_board
+  def standard_setup
     [[0, 0], [0, 7]].each { |pos| self[pos] = Rook.new(:black, self, pos) }
     [[0, 1], [0, 6]].each { |pos| self[pos] = Knight.new(:black, self, pos) }
     [[0, 2], [0, 5]].each { |pos| self[pos] = Bishop.new(:black, self, pos) }
@@ -27,7 +27,23 @@ class Board
     [[7, 2], [7, 5]].each { |pos| self[pos] = Bishop.new(:white, self, pos) }
     self[[7, 4]] = King.new(:white, self, [0, 3])
     self[[7, 3]] = Queen.new(:white, self, [0, 4])
-    @grid[6].map!.with_index { |_el, idx| Pawn.new(:white, self, [1, idx]) }
+    @grid[6].map!.with_index { |_el, idx| Pawn.new(:white, self, [6, idx]) }
+  end
+
+  def in_check?(color)
+
+  end
+
+  def find_king(color)
+    @grid.each_with_index do |row, idx|
+      row.each_with_index do |piece, idx|
+        
+      end
+    end
+  end
+
+  def valid_moves(color)
+
   end
 
   def []=(pos, piece)
