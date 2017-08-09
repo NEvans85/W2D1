@@ -31,7 +31,27 @@ class Board
   end
 
   def in_check?(color)
+    king_pos = find_king(color)
+    valid_moves(opp(color)).include?(king_pos)
+  end
 
+  def checkmate?(color)
+    if in_check?(color)
+
+    end
+  end
+
+  def dup
+    copy = []
+    @grid.each do |row|
+      row_copy = []
+      row.each do |piece|
+        row_copy << piece.dup
+        row_copy.last.board = copy
+      end
+      copy << row_copy
+    end
+    copy
   end
 
   def find_king(color)
@@ -45,10 +65,8 @@ class Board
 
   def valid_moves(color)
     all_moves = []
-    @grid.each do |row|
-      row.each do |piece|
-        all_moves += piece.moves if piece.color == color
-      end
+    @grid.flatten.each do |piece|
+      all_moves += piece.moves if piece.color == color
     end
     all_moves.uniq
   end
@@ -61,5 +79,9 @@ class Board
   def [](pos)
     x, y = pos
     @grid[x][y]
+  end
+
+  def opp(color)
+    color == :white ? :black : :white
   end
 end

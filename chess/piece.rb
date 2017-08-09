@@ -13,7 +13,7 @@ class Piece
   end
 
   def valid_move?(pos)
-    self.moves.include?(pos)
+    moves.include?(pos)
   end
 
 end
