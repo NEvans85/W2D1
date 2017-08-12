@@ -19,7 +19,7 @@ class Chess
 
   def take_turn
     begin
-      @board.move_piece(@curr_player.move)
+      @board.move_piece(@curr_player.move, @current_player.color)
     rescue
       puts 'Invalid Move.'
       retry
@@ -33,5 +33,9 @@ class Chess
 
   def game_over?
     @board.checkmate?(@curr_player.color)
+    puts "#{@curr_player.name} is in checkmate."
   end
 end
+
+game = Chess.new("player1", "player2")
+game.play
