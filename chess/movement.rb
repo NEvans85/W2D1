@@ -1,4 +1,4 @@
-require 'byebug'
+require 'move'
 
 module SlidingPiece
 
@@ -64,6 +64,8 @@ module SteppingPiece
     end
     remove_invalid_moves(moves)
   end
+
+  private
 
   def remove_invalid_moves(moves_arr)
     moves_arr.select do |pos|

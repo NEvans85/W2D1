@@ -8,8 +8,8 @@ class Board
   end
 
   def move_piece(move)
-    raise NoMoveException if self[start_pos].is_a?(NullPiece)
-    raise NoMoveException unless self[start_pos].valid_move?
+    raise NoMoveException if self[move.start_pos].is_a?(NullPiece)
+    raise NoMoveException unless self[move.start_pos].valid_move?
     self[move.end_pos] = self[move.start_pos]
     self[move.start_pos] = NullPiece.instance
     self.position = end_pos
@@ -37,6 +37,11 @@ class Board
 
   def checkmate?(color)
     possible_boards = valid_moves(color).map do |move|
+      poss_board = @board.dup
+      poss_board.move_piece(move)
+      poss_board
+    end
+    possible_boards.all? { |board| board.in_check(color) }
   end
 
   def dup
