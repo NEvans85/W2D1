@@ -7,11 +7,11 @@ class Board
     standard_setup
   end
 
-  def move_piece(start_pos, end_pos)
+  def move_piece(move)
     raise NoMoveException if self[start_pos].is_a?(NullPiece)
     raise NoMoveException unless self[start_pos].valid_move?
-    self[end_pos] = self[start_pos]
-    self[start_pos] = NullPiece.instance
+    self[move.end_pos] = self[move.start_pos]
+    self[move.start_pos] = NullPiece.instance
     self.position = end_pos
   end
 
@@ -36,9 +36,7 @@ class Board
   end
 
   def checkmate?(color)
-    if in_check?(color)
 
-    end
   end
 
   def dup
