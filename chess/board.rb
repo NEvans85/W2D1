@@ -36,7 +36,7 @@ class Board
   end
 
   def checkmate?(color)
-
+    possible_boards = valid_moves(color).map do |move|
   end
 
   def dup

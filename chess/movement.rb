@@ -15,19 +15,20 @@ module SlidingPiece
     moves.uniq
   end
 
+  private
+
   def slide_moves(pos_increment)
     moves = []
     working_pos = @position.dup
     loop do
-      # debugger
       working_pos.map!.with_index { |el, idx| el + pos_increment[idx] }
-      if @board[working_pos].nil? || @board[working_pos].color == self.color ||
+      if @board[working_pos].nil? || @board[working_pos].color == color ||
          working_pos.any? { |el| el < 0 || el > 7 }
         break
       elsif @board[working_pos].is_a?(NullPiece)
-        moves << working_pos.dup
-      elsif @board[working_pos].color != self.color
-        moves << working_pos.dup
+        moves << Move.new(@position, working_pos.dup)
+      elsif @board[working_pos].color != color
+        moves << Move.new(@position, working_pos.dup)
         break
       end
     end
@@ -53,13 +54,12 @@ module SteppingPiece
 
   def moves
     moves = []
-    debugger
     steps.each do |pos_diff|
       working_pos = @position.dup
       working_pos.map!.with_index { |el, idx| el + pos_diff[idx] }
       if @board[working_pos].is_a?(NullPiece) ||
-         @board[working_pos].color != self.color
-        moves << working_pos.dup
+         @board[working_pos].color != color
+        moves << Move.new(@position, working_pos.dup)
       end
     end
     remove_invalid_moves(moves)

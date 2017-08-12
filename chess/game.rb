@@ -18,9 +18,10 @@ class Chess
   end
 
   def take_turn
-    @board.move_piece(@curr_player.move)
+    begin
+      @board.move_piece(@curr_player.move)
     rescue
-      puts "Invalid Move."
+      puts 'Invalid Move.'
       retry
     end
     switch_players!
@@ -28,5 +29,9 @@ class Chess
 
   def switch_players!
     @curr_player == @player1 ? @curr_player = @player2 : @curr_player = @player1
+  end
+
+  def game_over?
+    @board.checkmate?(@curr_player.color)
   end
 end
