@@ -5,6 +5,7 @@ require_relative 'movement'
 class Piece
 
   attr_reader :color
+  attr_accessor :board, :position
 
   def initialize(black_or_white, board, pos)
     @color = black_or_white
@@ -12,8 +13,13 @@ class Piece
     @position = pos
   end
 
-  def valid_move?(pos)
-    moves.include?(pos)
+  def valid_move?(move)
+    moves.include?(move) && (@board[move.end_pos].is_a?(NullPiece) ||
+                             @board[move.end_pos].color == @color)
+  end
+
+  def inspect
+    "#{@color} #{self.class} @ #{@position}"
   end
 
 end
@@ -111,7 +117,7 @@ class Pawn < Piece
   end
 
   def steps
-    self.color == :white ? white_steps : black_steps
+    @color == :white ? white_steps : black_steps
   end
 
   def black_steps
@@ -125,9 +131,8 @@ class Pawn < Piece
   end
 
   def white_steps
-    debugger
     steps = [[-1, 0]]
-    steps << [-2, 0] if @position[1] == 6
+    steps << [-2, 0] if @position[0] == 6
     steps << [-1, 1] unless @board[@position.sum([-1, 1])].nil? ||
                             @board[@position.sum([-1, 1])].color != :black
     steps << [-1, -1] unless @board[@position.sum([-1, -1])].nil? ||

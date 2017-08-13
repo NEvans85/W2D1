@@ -8,8 +8,9 @@ class Display
 
   attr_reader :cursor
 
-  def initialize(board)
+  def initialize(board, player_color)
     @board = board
+    @player_color = player_color
     @cursor = Cursor.new([0, 0], @board)
   end
 
@@ -26,9 +27,9 @@ class Display
         print'|'
       end
       print "\n"
-      puts 'Make a move'
-      puts 'Use arrows to move the cursor and select with space or enter.'
     end
+    puts "Make a move #{@player_color} player."
+    puts 'Use arrows to move the cursor and select with space or enter.'
     nil
   end
 

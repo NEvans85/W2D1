@@ -7,11 +7,11 @@ class Player
     @color = black_or_white
     @board = board
     @name = name
-    @display = Display.new(@board)
+    @display = Display.new(@board, @color)
   end
 
   def move
-    render
+    @display.render
     start_pos = select_position
     end_pos = select_position
     Move.new(start_pos, end_pos)
@@ -25,4 +25,7 @@ class Player
     end
     selection
   end
+
+  def opp
+    @color == :white ? :black : :white
 end

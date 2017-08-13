@@ -1,4 +1,4 @@
-require 'move'
+require_relative 'move'
 
 module SlidingPiece
 
@@ -22,8 +22,9 @@ module SlidingPiece
     working_pos = @position.dup
     loop do
       working_pos.map!.with_index { |el, idx| el + pos_increment[idx] }
-      if @board[working_pos].nil? || @board[working_pos].color == color ||
-         working_pos.any? { |el| el < 0 || el > 7 }
+      if working_pos.any? { |el| el < 0 || el > 7 } ||
+         @board[working_pos].nil? ||
+         @board[working_pos].color == color
         break
       elsif @board[working_pos].is_a?(NullPiece)
         moves << Move.new(@position, working_pos.dup)
@@ -57,20 +58,12 @@ module SteppingPiece
     steps.each do |pos_diff|
       working_pos = @position.dup
       working_pos.map!.with_index { |el, idx| el + pos_diff[idx] }
-      if @board[working_pos].is_a?(NullPiece) ||
-         @board[working_pos].color != color
+      if working_pos.all? { |el| (0..7).cover?(el) } &&
+         (@board[working_pos].is_a?(NullPiece) ||
+          @board[working_pos].color != color)
         moves << Move.new(@position, working_pos.dup)
       end
     end
-    remove_invalid_moves(moves)
-  end
-
-  private
-
-  def remove_invalid_moves(moves_arr)
-    moves_arr.select do |pos|
-      pos.all? { |el| (0..7).cover?(el) } &&
-      @board[pos].color != self.color
-    end
+    moves
   end
 end
