@@ -45,16 +45,15 @@ class Board
     possible_boards = []
     valid_moves(color).each do |move|
       poss_board = Board.new(grid_dup)
-      begin
-        debugger
-        poss_board.move_piece(move, color)
-        possible_boards << poss_board
-      rescue
-        puts "YUP +IT BROKE!!!"
-        next
-      end
+      poss_board.move_piece(move, color)
+      possible_boards << poss_board
     end
+    debugger
     possible_boards.all? { |board| board.in_check?(color) }
+  end
+
+  def loser?(color)
+    in_check?(color) && checkmate?(color)
   end
 
   def grid_dup
@@ -84,7 +83,7 @@ class Board
     @grid.flatten.each do |piece|
       all_moves += piece.moves if piece.color == color
     end
-    all_moves.uniq
+    all_moves
   end
 
   def []=(pos, piece)
@@ -100,4 +99,5 @@ class Board
   def opp(color)
     color == :white ? :black : :white
   end
+
 end

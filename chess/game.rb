@@ -33,12 +33,12 @@ class Chess
   end
 
   def game_over?
-    if @board.winner?(@curr_player.opp)
+    if @board.loser?(@curr_player.color)
       puts "#{@curr_player.name} is in checkmate."
-      true
+      return true
     end
     false
   end
 end
 
-Chess.new("white", "black").play
+Chess.new("White", "Black").play

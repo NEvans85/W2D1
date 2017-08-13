@@ -14,7 +14,7 @@ class Player
     @display.render
     start_pos = select_position
     end_pos = select_position
-    Move.new(start_pos, end_pos)
+    Move.new(start_pos, end_pos, @board)
   end
 
   def select_position
@@ -28,4 +28,5 @@ class Player
 
   def opp
     @color == :white ? :black : :white
+  end
 end

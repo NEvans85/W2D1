@@ -12,7 +12,7 @@ module SlidingPiece
     when :both
       moves += diagonals + row + col
     end
-    moves.uniq
+    moves
   end
 
   private
@@ -27,9 +27,9 @@ module SlidingPiece
          @board[working_pos].color == color
         break
       elsif @board[working_pos].is_a?(NullPiece)
-        moves << Move.new(@position, working_pos.dup)
+        moves << Move.new(@position, working_pos.dup, @board)
       elsif @board[working_pos].color != color
-        moves << Move.new(@position, working_pos.dup)
+        moves << Move.new(@position, working_pos.dup, @board)
         break
       end
     end
@@ -61,7 +61,7 @@ module SteppingPiece
       if working_pos.all? { |el| (0..7).cover?(el) } &&
          (@board[working_pos].is_a?(NullPiece) ||
           @board[working_pos].color != color)
-        moves << Move.new(@position, working_pos.dup)
+        moves << Move.new(@position, working_pos.dup, @board)
       end
     end
     moves

@@ -15,7 +15,7 @@ class Piece
 
   def valid_move?(move)
     moves.include?(move) && (@board[move.end_pos].is_a?(NullPiece) ||
-                             @board[move.end_pos].color == @color)
+                             @board[move.end_pos].color != @color)
   end
 
   def inspect
@@ -121,22 +121,26 @@ class Pawn < Piece
   end
 
   def black_steps
-    steps = [[1, 0]]
-    steps << [2, 0] if @position[0] == 1
-    steps << [1, 1] unless @board[@position.sum([1, 1])].nil? ||
-                           @board[@position.sum([1, 1])].color != :white
-    steps << [1, -1] unless @board[@position.sum([1, -1])].nil? ||
-                            @board[@position.sum([1, -1])].color != :white
+    steps = []
+    steps << [1, 0] if @board[@position.sum([1, 0])].is_a?(NullPiece)
+    steps << [2, 0] if @position[0] == 1 &&
+                       @board[@position.sum([2, 0])].is_a?(NullPiece)
+    steps << [1, 1] if @position.sum([1, 1]).all? { |i| (0..7).cover?(i) } &&
+                       @board[@position.sum([1, 1])].color == :white
+    steps << [1, -1] if @position.sum([1, -1]).all? { |i| (0..7).cover?(i) } &&
+                        @board[@position.sum([1, -1])].color == :white
     steps
   end
 
   def white_steps
-    steps = [[-1, 0]]
-    steps << [-2, 0] if @position[0] == 6
-    steps << [-1, 1] unless @board[@position.sum([-1, 1])].nil? ||
-                            @board[@position.sum([-1, 1])].color != :black
-    steps << [-1, -1] unless @board[@position.sum([-1, -1])].nil? ||
-                             @board[@position.sum([-1, -1])].color != :black
+    steps = []
+    steps << [-1, 0] if @board[@position.sum([-1, 0])].is_a?(NullPiece)
+    steps << [-2, 0] if @position[0] == 6 &&
+                        @board[@position.sum([-2, 0])].is_a?(NullPiece)
+    steps << [-1, 1] if @position.sum([-1, 1]).all? { |i| (0..7).cover?(i) } &&
+                        @board[@position.sum([-1, 1])].color == :black
+    steps << [-1, -1] if @position.sum([-1, -1]).all? { |i| (0..7).cover?(i) } &&
+                         @board[@position.sum([-1, -1])].color == :black
     steps
   end
 
